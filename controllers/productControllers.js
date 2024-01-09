@@ -1,15 +1,5 @@
 import Products from "../models/Products.js";
 
-export const getProducts = async (__, res) => {
-  try {
-    const data = await Products.find({});
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-};
-
 export const addProducts = (req, res) => {
   const products = new Products({
     name: req.body.name,
@@ -21,5 +11,15 @@ export const addProducts = (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
+  }
+};
+
+export const getProducts = async (__, res) => {
+  try {
+    const data = await Products.find({});
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
 };
