@@ -2,13 +2,13 @@ import Users from "../models/Users.js";
 import bcrypt from "bcryptjs";
 
 export const register = async (req, res) => {
-  const { body } = req;
+  const { name, email, password } = req.body;
   const salt = await bcrypt.genSalt(10);
-  const securePass = await bcrypt.hash(body.password, salt);
+  const securePass = await bcrypt.hash(password, salt);
 
   const newUser = new Users({
-    name: body.name,
-    email: body.email,
+    name,
+    email,
     password: securePass,
   });
 
