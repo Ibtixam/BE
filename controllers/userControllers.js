@@ -1,5 +1,8 @@
 import Users from "../models/Users.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET = "Ibtisamisagoodboy";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -12,11 +15,20 @@ export const register = async (req, res) => {
     password: securePass,
   });
 
+  const data = {
+    user: {
+      id: Users._id,
+    },
+  };
+
+  const authToken = jwt.sign(data, JWT_SECRET);
+  res.json({ authToken });
+
   try {
     newUser.save();
-    res.status(200).send("User successfully saved into backend");
+    res.status(200).send("Account Created Successfully");
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -26,18 +38,24 @@ export const login = async (req, res) => {
     const user = await Users.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ error: "Invalid credentials" });
+      return res.status(400).json("Invalid credentials");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-
     if (!isPasswordValid) {
-      return res.status(400).json({ error: "Invalid credentials" });
+      return res.status(400).json("Invalid credentials");
     }
 
-    res.status(200).json({ message: "Login successful" });
+    const data = {
+      user: {
+        id: Users._id,
+      },
+    };
+
+    const authToken = jwt.sign(data, JWT_SECRET);
+    res.json({ authToken });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json("Invalid Email or Password");
   }
 };
