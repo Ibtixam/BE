@@ -2,7 +2,9 @@ import Products from "../models/Products.js";
 
 export const addProducts = (req, res) => {
   const products = new Products({
-    name: req.body.name,
+    Cash_payment_voucher: req.body.Cash_payment_voucher,
+    Salary_payment_voucher: req.body.Salary_payment_voucher,
+    GTN_Number: req.body.GTN_Number,
   });
 
   try {
