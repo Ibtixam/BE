@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-const JwtSecret = process.env.JWT_SECRET;
+const jwt_secret = process.env.JWT_SECRET;
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -19,18 +19,18 @@ export const register = async (req, res) => {
 
   const data = {
     user: {
-      id: Users._id,
+      id: newUser._id,
     },
   };
 
-  const authToken = jwt.sign(data, JwtSecret);
-  res.json({ authToken });
+  const authToken = jwt.sign(data, jwt_secret);
+  res.status(200).send({ authToken });
 
   try {
-    newUser.save();
-    res.status(200).send("Account Created Successfully");
+    await newUser.save();
+    res.status(200).send("User successfully saved into backend");
   } catch (error) {
-    res.status(500).send("Internal Server Error");
+    res.status(500).send(error);
   }
 };
 
@@ -40,24 +40,25 @@ export const login = async (req, res) => {
     const user = await Users.findOne({ email });
 
     if (!user) {
-      return res.status(400).json("Invalid credentials");
+      return res.status(400).json({ error: "Invalid credentials" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
+
     if (!isPasswordValid) {
-      return res.status(400).json("Invalid credentials");
+      return res.status(400).json({ error: "Invalid credentials" });
     }
 
     const data = {
       user: {
-        id: Users._id,
+        id: user._id,
       },
     };
 
-    const authToken = jwt.sign(data, JwtSecret);
-    res.json({ authToken });
+    const authToken = jwt.sign(data, jwt_secret);
+    res.status(200).send({ authToken });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json("Invalid Email or Password");
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
