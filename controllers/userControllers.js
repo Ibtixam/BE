@@ -1,8 +1,10 @@
 import Users from "../models/Users.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
-const JWT_SECRET = "Ibtisamisagoodboy";
+const JwtSecret = process.env.JWT_SECRET;
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -21,7 +23,7 @@ export const register = async (req, res) => {
     },
   };
 
-  const authToken = jwt.sign(data, JWT_SECRET);
+  const authToken = jwt.sign(data, JwtSecret);
   res.json({ authToken });
 
   try {
@@ -52,7 +54,7 @@ export const login = async (req, res) => {
       },
     };
 
-    const authToken = jwt.sign(data, JWT_SECRET);
+    const authToken = jwt.sign(data, JwtSecret);
     res.json({ authToken });
   } catch (error) {
     console.error(error.message);
