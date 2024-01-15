@@ -3,8 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectToDb } from "./db.js";
 import { addProducts, getProducts } from "./controllers/productControllers.js";
-import { login, register } from "./controllers/userControllers.js";
-import { body } from "express-validator";
+import UserRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -26,25 +25,8 @@ app.use(express.json());
 app.post("/api/add/products", addProducts);
 app.get("/api/get/products", getProducts);
 
-// Auth Routes
-app.post(
-  "/login",
-  body("name", "Name must be at least 3 characters").isLength({ min: 3 }),
-  body("email", "Please Enter a valid email").isEmail(),
-  body("password", "Name must be at least 6 characters").isLength({ min: 6 }),
-  login
-);
-
-app.post(
-  "/register",
-  [
-    body("name", "Name must be at least 3 characters").isLength({ min: 3 }),
-    body("email", "Please Enter a valid email").isEmail(),
-    body("password", "Name must be at least 6 characters").isLength({ min: 6 }),
-  ],
-  register
-);
-
 app.listen(port, () => {
   console.log(`Backend listening on ${host}:${port}`);
 });
+
+app.use("/api/auth", UserRoutes);

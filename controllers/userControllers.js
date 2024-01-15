@@ -16,18 +16,17 @@ export const register = async (req, res) => {
     email,
     password: securePass,
   });
-
-  const data = {
-    user: {
-      id: newUser._id,
-    },
-  };
-
-  const authToken = jwt.sign(data, jwt_secret);
-  res.status(200).send({ authToken });
-
   try {
     await newUser.save();
+    const data = {
+      user: {
+        id: newUser._id,
+      },
+    };
+
+    const authToken = jwt.sign(data, jwt_secret);
+    res.status(200).send({ authToken });
+
     res.status(200).send("User successfully saved into backend");
   } catch (error) {
     res.status(500).send(error);
@@ -60,5 +59,16 @@ export const login = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const getUserDetails = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await Users.findById(userId).select("-password");
+    res.send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(200).send("Internal Server Error");
   }
 };
