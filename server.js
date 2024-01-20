@@ -9,7 +9,6 @@ import fetchUser from "./middleware/fetchuser.js";
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
-const host = process.env.host;
 
 connectToDb();
 
@@ -27,7 +26,7 @@ app.post("/api/add/products", fetchUser, addProducts);
 app.get("/api/get/products", fetchUser, getProducts);
 
 app.listen(port, () => {
-  console.log(`Backend listening on ${host}:${port}`);
+  console.log(`Backend listening on htttp://localhost:${port}`);
 });
 
 app.use("/api/auth", UserRoutes);
