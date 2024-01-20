@@ -1,10 +1,12 @@
 import Products from "../models/Products.js";
 
 export const addProducts = (req, res) => {
+  const { Cash_payment_voucher, Salary_payment_voucher, GTN_Number } = req.body;
   const products = new Products({
-    Cash_payment_voucher: req.body.Cash_payment_voucher,
-    Salary_payment_voucher: req.body.Salary_payment_voucher,
-    GTN_Number: req.body.GTN_Number,
+    user: req?.user?.id,
+    Cash_payment_voucher,
+    Salary_payment_voucher,
+    GTN_Number,
   });
 
   try {
@@ -16,9 +18,9 @@ export const addProducts = (req, res) => {
   }
 };
 
-export const getProducts = async (__, res) => {
+export const getProducts = async (req, res) => {
   try {
-    const data = await Products.find({});
+    const data = await Products.find({ user: req?.user?.id });
     res.json(data);
   } catch (error) {
     console.error(error);

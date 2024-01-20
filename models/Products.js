@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "Products",
+  },
   Cash_payment_voucher: {
     type: String,
     required: true,
