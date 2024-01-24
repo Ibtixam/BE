@@ -1,12 +1,13 @@
 import Products from "../models/Products.js";
 
 export const addProducts = (req, res) => {
-  const { Cash_payment_voucher, Salary_payment_voucher, GTN_Number } = req.body;
+  const { Voucher_Type, Voucher_Number, Amount, Date } = req.body;
   const products = new Products({
     user: req?.user?.id,
-    Cash_payment_voucher,
-    Salary_payment_voucher,
-    GTN_Number,
+    Voucher_Type,
+    Voucher_Number,
+    Amount,
+    Date,
   });
 
   try {

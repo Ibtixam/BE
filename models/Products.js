@@ -6,17 +6,20 @@ const ProductSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Products",
   },
-  Cash_payment_voucher: {
+  Voucher_Type: {
     type: String,
     required: true,
   },
-  Salary_payment_voucher: {
+  Voucher_Number: {
     type: String,
     required: true,
   },
-  GTN_Number: {
-    type: String,
+  Amount: {
+    type: Number,
     required: true,
+  },
+  Date: {
+    default: Date,
   },
 });
 
