@@ -19,7 +19,8 @@ const ProductSchema = new Schema({
     required: true,
   },
   Date: {
-    default: Date,
+    type: String,
+    required: true,
   },
 });
 
