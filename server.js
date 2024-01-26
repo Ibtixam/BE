@@ -5,6 +5,17 @@ import { connectToDb } from "./db.js";
 import { addProducts, getProducts } from "./controllers/productControllers.js";
 import UserRoutes from "./routes/userRoutes.js";
 import fetchUser from "./middleware/fetchuser.js";
+import multer from "multer";
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
 
 dotenv.config();
 const app = express();
@@ -18,6 +29,7 @@ const corsOpts = {
   allowedHeaders: ["Content-Type", "auth-token"],
 };
 
+app.use(express.urlencoded({ extended: false }));
 app.use(cors(corsOpts));
 app.use(express.json());
 

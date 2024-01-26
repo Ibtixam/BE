@@ -22,6 +22,10 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
   },
+  Voucher_Image: {
+    type: String,
+    // required: true,
+  },
 });
 
 const Products = mongoose.model("Products", ProductSchema);

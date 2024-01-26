@@ -1,17 +1,19 @@
 import Products from "../models/Products.js";
 
-export const addProducts = (req, res) => {
-  const { Voucher_Type, Voucher_Number, Amount, Date } = req.body;
+export const addProducts = async (req, res) => {
+  const { Voucher_Type, Voucher_Number, Amount, Date, Voucher_Image } =
+    req.body;
   const products = new Products({
     user: req?.user?.id,
     Voucher_Type,
     Voucher_Number,
     Amount,
     Date,
+    Voucher_Image,
   });
 
   try {
-    products.save();
+    await products.save();
     res.status(200).send("Product add successfully in Database");
   } catch (error) {
     console.error(error);
