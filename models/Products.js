@@ -24,7 +24,7 @@ const ProductSchema = new Schema({
   },
   Voucher_Image: {
     type: String,
-    // required: true,
+    required: true,
   },
 });
 

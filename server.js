@@ -34,7 +34,7 @@ app.use(cors(corsOpts));
 app.use(express.json());
 
 // Products Routes
-app.post("/api/add/products", fetchUser, addProducts);
+app.post("/api/add/products", fetchUser, upload.single("Voucher_Image"), addProducts);
 app.get("/api/get/products", fetchUser, getProducts);
 
 app.listen(port, () => {
