@@ -6,9 +6,14 @@ import { addProducts, getProducts } from "./controllers/productControllers.js";
 import UserRoutes from "./routes/userRoutes.js";
 import fetchUser from "./middleware/fetchuser.js";
 import multer from "multer";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./Uploads");
+    cb(null, "./uploads");
   },
   filename: function (req, file, cb) {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -33,8 +38,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors(corsOpts));
 app.use(express.json());
 
+app.use("/uploads", express.static(__dirname + "/uploads"));
+
 // Products Routes
-app.post("/api/add/products", fetchUser, upload.single("Voucher_Image"), addProducts);
+app.post(
+  "/api/add/products",
+  fetchUser,
+  upload.single("Voucher_Image"),
+  addProducts
+);
 app.get("/api/get/products", fetchUser, getProducts);
 
 app.listen(port, () => {
