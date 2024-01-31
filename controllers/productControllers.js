@@ -1,13 +1,14 @@
 import Products from "../models/Products.js";
 
 export const addProducts = async (req, res) => {
-  const { Voucher_Type, Voucher_Number, Amount, Date } = req.body;
+  const { Voucher_Type, Voucher_Number, Amount, Location, Date } = req.body;
   const Voucher_Image = req.file.filename;
   const products = new Products({
     user: req?.user?.id,
     Voucher_Type,
     Voucher_Number,
     Amount,
+    Location,
     Date,
     Voucher_Image,
   });

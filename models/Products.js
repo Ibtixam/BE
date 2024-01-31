@@ -16,7 +16,9 @@ const ProductSchema = new Schema({
   },
   Amount: {
     type: Number,
-    required: true,
+  },
+  Location: {
+    type: String,
   },
   Date: {
     type: String,
