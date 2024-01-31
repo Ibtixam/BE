@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export const connectToDb = () => {
-  mongoose.connect("mongodb://localhost:27017/BE");
+  mongoose.connect(process.env.MONGO_URL);
 
   const db = mongoose.connection;
 
