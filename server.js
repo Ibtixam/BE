@@ -49,6 +49,7 @@ app.post(
 );
 app.get("/api/get/products", fetchUser, getProducts);
 
+app.get("/", (req, res) => res.send("hello"));
 app.listen(port, () => {
   console.log(`Backend listening on htttp://localhost:${port}`);
 });
