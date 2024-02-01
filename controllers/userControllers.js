@@ -6,29 +6,33 @@ dotenv.config();
 
 const jwt_secret = process.env.JWT_SECRET;
 
+const generateAuthToken = (user) => {
+  const data = {
+    user: {
+      id: user._id,
+    },
+  };
+  return jwt.sign(data, jwt_secret);
+};
+
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
-  const salt = await bcrypt.genSalt(10);
-  const securePass = await bcrypt.hash(password, salt);
-
-  const newUser = new Users({
-    name,
-    email,
-    password: securePass,
-  });
   try {
-    await newUser.save();
-    const data = {
-      user: {
-        id: newUser._id,
-      },
-    };
+    const salt = await bcrypt.genSalt(10);
+    const securePass = await bcrypt.hash(password, salt);
 
-    const authToken = jwt.sign(data, jwt_secret);
+    const newUser = new Users({
+      name,
+      email,
+      password: securePass,
+    });
+
+    await newUser.save();
+    const authToken = generateAuthToken(newUser);
     res.status(200).send({ authToken });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error(error);
+    res.status(500).json({ error: "Failed to register user" });
   }
 };
 
@@ -37,27 +41,15 @@ export const login = async (req, res) => {
   try {
     const user = await Users.findOne({ email });
 
-    if (!user) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(400).json({ error: "Invalid credentials" });
-    }
-
-    const data = {
-      user: {
-        id: user._id,
-      },
-    };
-
-    const authToken = jwt.sign(data, jwt_secret);
-    res.status(200).send("Account Created Successfully");
+    const authToken = generateAuthToken(user);
+    res.status(200).send({ authToken });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Failed to log in" });
   }
 };
 
@@ -68,6 +60,6 @@ export const getUserDetails = async (req, res) => {
     res.send(user);
   } catch (error) {
     console.error(error);
-    res.status(200).send("Internal Server Error");
+    res.status(500).json({ error: "Failed to get user details" });
   }
 };
