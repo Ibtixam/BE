@@ -30,12 +30,13 @@ connectToDb();
 
 const corsOpts = {
   origin: "*",
-  methods: ["GET", "POST", "PUT"],
+  credential: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "auth-token"],
 };
 
 app.use(express.urlencoded({ extended: false }));
-app.use(cors(corsOpts));
+app.options("", cors(corsOpts));
 app.use(express.json());
 
 app.use("/uploads", express.static(__dirname + "/uploads"));
