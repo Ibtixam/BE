@@ -26,10 +26,9 @@ export const register = async (req, res) => {
 
     const authToken = jwt.sign(data, jwt_secret);
     res.status(200).send({ authToken });
-
-    res.status(200).send("User successfully saved into backend");
   } catch (error) {
-    res.status(500).send(error);
+    console.error(error.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -55,7 +54,7 @@ export const login = async (req, res) => {
     };
 
     const authToken = jwt.sign(data, jwt_secret);
-    res.status(200).send({ authToken });
+    res.status(200).send("Account Created Successfully");
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Internal Server Error" });
