@@ -42,14 +42,14 @@ export const login = async (req, res) => {
     const user = await Users.findOne({ email });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(400).json({ error: "Invalid credentials" });
+      return res.status(400).send("Invalid credentials");
     }
 
     const authToken = generateAuthToken(user);
     res.status(200).send({ authToken });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: "Failed to log in" });
+    res.status(500).send("Failed to log in");
   }
 };
 

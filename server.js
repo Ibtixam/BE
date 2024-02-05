@@ -36,7 +36,7 @@ const corsOpts = {
 
 app.use(express.urlencoded({ extended: false }));
 app.options("", cors(corsOpts));
-app.use(cors(corsOpts))
+app.use(cors(corsOpts));
 app.use(express.json());
 
 app.use("/uploads", express.static(__dirname + "/uploads"));

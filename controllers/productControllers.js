@@ -12,12 +12,15 @@ export const addProducts = async (req, res) => {
     Date,
     Voucher_Image,
   });
+
+  if (!Voucher_Image) {
+    return res.status(400).send("Image is Required");
+  }
   try {
     await products.save();
-    res.status(200).send("Product added successfully to the Database");
+    res.status(200).send("Voucher Successfuly Added");
   } catch (error) {
-    console.error(error);
-    res.status(500).send(error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
