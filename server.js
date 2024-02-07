@@ -2,7 +2,12 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectToDb } from "./db.js";
-import { addProducts, getProducts } from "./controllers/productControllers.js";
+import {
+  addVoucher,
+  getAllVouchers,
+  getVoucher,
+  deleteVoucher,
+} from "./controllers/productControllers.js";
 import UserRoutes from "./routes/userRoutes.js";
 import fetchUser from "./middleware/fetchuser.js";
 import multer from "multer";
@@ -41,14 +46,16 @@ app.use(express.json());
 
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
-// Products Routes
+// Voucher Routes
 app.post(
-  "/api/add/products",
+  "/api/add/voucher",
   fetchUser,
   upload.single("Voucher_Image"),
-  addProducts
+  addVoucher
 );
-app.get("/api/get/products", fetchUser, getProducts);
+app.get("/api/get/voucher", fetchUser, getVoucher);
+app.get("/api/all/vouchers", fetchUser, getAllVouchers);
+app.post("/api/delete/voucher", fetchUser, deleteVoucher);
 app.get("/", (req, res) => res.send("API is running correctly"));
 
 app.listen(port, () => {

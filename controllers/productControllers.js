@@ -1,9 +1,9 @@
-import Products from "../models/Products.js";
+import Voucher from "../models/Voucher.js";
 
-export const addProducts = async (req, res) => {
+export const addVoucher = async (req, res) => {
   const { Voucher_Type, Voucher_Number, Amount, Location, Date } = req.body;
   const Voucher_Image = req.file.filename;
-  const products = new Products({
+  const newVoucher = new Voucher({
     user: req?.user?.id,
     Voucher_Type,
     Voucher_Number,
@@ -17,17 +17,40 @@ export const addProducts = async (req, res) => {
     return res.status(400).send("Image is Required");
   }
   try {
-    await products.save();
-    res.status(200).send("Voucher Successfuly Added");
+    await newVoucher.save();
+    res
+      .status(200)
+      .json({ data: "Voucher Successfuly Added", id: newVoucher?._id });
   } catch (error) {
     res.status(500).send("Internal Server Error");
   }
 };
 
-export const getProducts = async (req, res) => {
+export const getVoucher = async (req, res) => {
   try {
-    const data = await Products.find({ user: req?.user?.id });
+    const data = await Voucher.find({ user: req?.user?.id });
     res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+export const getAllVouchers = async (req, res) => {
+  try {
+    const data = await Voucher.find({});
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+export const deleteVoucher = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const data = await Voucher.deleteOne({ _id: id });
+    res.send(data);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");

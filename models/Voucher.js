@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const ProductSchema = new Schema({
+const VoucherSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "Products",
+    ref: "Voucher",
   },
   Voucher_Type: {
     type: String,
@@ -30,6 +30,6 @@ const ProductSchema = new Schema({
   },
 });
 
-const Products = mongoose.model("Products", ProductSchema);
+const Voucher = mongoose.model("Voucher", VoucherSchema);
 
-export default Products;
+export default Voucher;
