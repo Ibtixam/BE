@@ -7,7 +7,8 @@ import {
 import { body } from "express-validator";
 import fetchUser from "../middleware/fetchuser.js";
 
-const router = express();
+const router = express.Router();
+
 router.post(
   "/login",
   body("email", "Please Enter a valid email").isEmail(),
@@ -27,6 +28,6 @@ router.post(
   register
 );
 
-router.post("/getUserDetails", fetchUser, getUserDetails);
+router.get("/getUserDetails", fetchUser, getUserDetails);
 
 export default router;

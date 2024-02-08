@@ -46,6 +46,8 @@ app.use(express.json());
 
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
+app.use("/api/auth", UserRoutes);
+
 // Voucher Routes
 app.post(
   "/api/add/voucher",
@@ -59,7 +61,6 @@ app.post("/api/delete/voucher", fetchUser, deleteVoucher);
 app.get("/", (req, res) => res.send("API is running correctly"));
 
 app.listen(port, () => {
-  console.log(`Backend listening on htttp://localhost:${port}`);
+  console.log(`Backend listening on http://localhost:${port}`);
 });
 
-app.use("/api/auth", UserRoutes);
