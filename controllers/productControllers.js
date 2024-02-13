@@ -2,7 +2,12 @@ import Voucher from "../models/Voucher.js";
 
 export const addVoucher = async (req, res) => {
   const { Voucher_Type, Voucher_Number, Amount, Location, Date } = req.body;
-  const Voucher_Image = req.file.filename;
+  const Voucher_Image = req.file?.filename;
+
+  if (!Voucher_Image) {
+    return res.status(400).send("Image is Required");
+  }
+
   const newVoucher = new Voucher({
     user: req?.user?.id,
     Voucher_Type,
@@ -13,9 +18,6 @@ export const addVoucher = async (req, res) => {
     Voucher_Image,
   });
 
-  if (!Voucher_Image) {
-    return res.status(400).send("Image is Required");
-  }
   try {
     await newVoucher.save();
     res
