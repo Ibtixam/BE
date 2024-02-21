@@ -58,3 +58,20 @@ export const deleteVoucher = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+export const filterVoucher = async (req, res) => {
+  const { startDate, endDate } = req.body;
+  if(!startDate && !endDate){
+    return res.status(400).send("Please send start and end Date in body")
+  }
+  try {
+    const data = await Voucher.find({});
+    const filterDate = data?.filter(
+      (a) => a?.Date >= startDate && a?.Date <= endDate
+    );
+    res.status(200).json(filterDate);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Serverl Error");
+  }
+};
